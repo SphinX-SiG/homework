@@ -6,18 +6,19 @@ import (
 	"os"
 )
 
-func readFile(path string) []byte {
+func readFile(path string) ([]byte, error) {
+	e := []byte{}
 	fd, err := os.OpenFile(path, os.O_RDONLY, os.ModePerm)
 	if err != nil {
-		panic(err)
+		return e, err
 	}
 
 	raw, err := ioutil.ReadAll(fd)
 	if err != nil {
-		panic(err)
+		return e, err
 	}
 
-	return raw
+	return raw, err
 }
 
 func countLines(raw []byte) int {
@@ -34,7 +35,7 @@ func countLines(raw []byte) int {
 func main() {
 	path := "./README.md"
 
-	raw := readFile(path)
+	raw, _ := readFile(path)
 
 	fmt.Println(countLines(raw))
 }
